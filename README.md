@@ -1,32 +1,26 @@
-Python YAML Use Case
-This is a simple Python project that demonstrates how to use YAML files to store and retrieve student information. The application reads student details from a students.yaml file and provides options to display all students and filter them based on GPA.
+## Python YAML Use Case
 
-Features
-Read student data from a YAML file.
+This repository demonstrates how to read and process student data from a YAML file using Python. The script allows users to display all students and filter them based on GPA.
 
-Display all students.
+# 📌 Features
 
-Filter students by a minimum GPA.
+Reads student information from a students.yaml file.
 
-Prerequisites
-Ensure you have Python installed (Python 3 recommended). Install the required package using:
+Displays all students.
 
+Filters students based on GPA input from the user.
+
+# 🚀 Installation
+
+Ensure you have Python installed (version 3.x recommended). Then, install the required dependencies:
 bash
 Copy
 Edit
 pip install pyyaml
-Project Structure
-bash
-Copy
-Edit
-Python_Yaml_Use_Case/
-│── students.yaml   # YAML file containing student data
-│── app.py          # Python script to process YAML data
-│── README.md       # Project documentation
-YAML File (students.yaml)
-yaml
-Copy
-Edit
+# 📄 YAML File (students.yaml)
+
+Create a YAML file named students.yaml with the following content:
+```
 students:
   - name: Alice
     age: 21
@@ -48,26 +42,41 @@ students:
     age: 21
     major: Computer Science
     gpa: 3.7
-Python Script (app.py)
-python
-Copy
-Edit
+```
+# 📝 Python Script (app.py)
+
+Create a Python script app.py with the following code:
+```
 import yaml
 
 def load_data(file_path):
-    """Load data from a YAML file."""
+    """
+    Load data from a YAML file.
+
+    :param file_path: Path to the YAML file.
+    :return: Data loaded from the YAML file.
+    """
     with open(file_path, 'r') as file:
-        data = yaml.safe_load(file)
+        data = yaml.safe_load(file)  # Load the data as a Python dictionary
     return data
 
 def display_students(students):
-    """Display all students."""
+    """
+    Display information about all students.
+
+    :param students: List of student dictionaries.
+    """
     print("\nAll Students:")
     for student in students:
         print(f"Name: {student['name']}, Age: {student['age']}, Major: {student['major']}, GPA: {student['gpa']}")
 
 def filter_students_by_gpa(students, min_gpa):
-    """Filter students with GPA above the given threshold."""
+    """
+    Filter and display students with a GPA above the specified minimum.
+
+    :param students: List of student dictionaries.
+    :param min_gpa: Minimum GPA for filtering.
+    """
     filtered_students = [s for s in students if s['gpa'] >= min_gpa]
 
     print(f"\nStudents with GPA >= {min_gpa}:")
@@ -78,33 +87,52 @@ def filter_students_by_gpa(students, min_gpa):
         print("No students found.")
 
 def main():
-    data = load_data('students.yaml')
-    students = data['students']
+    """
+    Main function to load and process student data.
+    """
+    file_path = "students.yaml"  # Replace with your actual YAML file path
+    try:
+        data = load_data(file_path)
 
-    display_students(students)
+        # Ensure the data contains a 'students' key
+        if 'students' not in data:
+            raise KeyError("Missing 'students' key in YAML file.")
 
-    min_gpa = float(input("\nEnter minimum GPA to filter students: "))
-    filter_students_by_gpa(students, min_gpa)
+        students = data['students']
 
-if __name__ == "__main__":
+        # Display all students
+        display_students(students)
+
+        # Filter students by GPA
+        min_gpa = float(input("\nEnter minimum GPA to filter students: "))
+        filter_students_by_gpa(students, min_gpa)
+
+    except FileNotFoundError:
+        print(f"Error: The file '{file_path}' was not found.")
+    except yaml.YAMLError:
+        print("Error: Failed to parse the YAML file.")
+    except ValueError:
+        print("Error: Invalid input. Please enter a numeric GPA value.")
+    except KeyError as e:
+        print(f"Error: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+if __name__ == "__main__":  # Corrected syntax
     main()
-How to Run
-Ensure students.yaml and app.py are in the same directory.
 
-Open a terminal and navigate to the project folder.
+```
 
-Run the script using:
+# ▶️ Running the Application
 
+Ensure app.py and students.yaml are in the same directory. Then, run:
 bash
 Copy
 Edit
 python app.py
-The script will display all students and then prompt for a minimum GPA to filter students.
 
-Expected Output
-yaml
-Copy
-Edit
+# 🖥️ Expected Output
+```
 All Students:
 Name: Alice, Age: 21, Major: Computer Science, GPA: 3.8
 Name: Bob, Age: 22, Major: Mathematics, GPA: 3.5
@@ -118,6 +146,10 @@ Students with GPA >= 3.6:
 Name: Alice, Age: 21, Major: Computer Science, GPA: 3.8
 Name: Charlie, Age: 20, Major: Physics, GPA: 3.9
 Name: Eva, Age: 21, Major: Computer Science, GPA: 3.7
-Conclusion
-This project demonstrates how to work with YAML files in Python, allowing for easy data storage and retrieval. It can be extended by adding features such as sorting, updating student records, and writing changes back to the YAML file.
+```
+
+# 🔍 Additional Features
+Expand functionality by adding sorting, updating student information, or saving changes back to the YAML file.
+
+Convert the script into a GUI-based application for better usability.
 
